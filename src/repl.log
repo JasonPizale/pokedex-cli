@@ -1,0 +1,19 @@
+
+> pokedex@1.0.0 dev
+> npx tsc && node dist/main.js
+
+src/pokeapi.ts(1,1): error TS1434: Unexpected keyword or identifier.
+src/pokeapi.ts(1,30): error TS1109: Expression expected.
+src/pokeapi.ts(1,39): error TS1005: ';' expected.
+src/pokeapi.ts(2,9): error TS1005: ':' expected.
+src/pokeapi.ts(2,60): error TS1005: ',' expected.
+src/pokeapi.ts(4,7): error TS1005: ':' expected.
+src/pokeapi.ts(5,11): error TS1005: ':' expected.
+src/pokeapi.ts(5,34): error TS1005: ',' expected.
+src/pokeapi.ts(7,9): error TS1003: Identifier expected.
+src/pokeapi.ts(7,14): error TS1005: ',' expected.
+src/pokeapi.ts(7,17): error TS1005: ',' expected.
+src/pokeapi.ts(7,19): error TS1136: Property assignment expected.
+src/pokeapi.ts(13,3): error TS1128: Declaration or statement expected.
+src/pokeapi.ts(13,5): error TS1005: 'try' expected.
+src/pokeapi.ts(16,1): error TS1128: Declaration or statement expected.

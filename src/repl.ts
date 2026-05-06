@@ -16,15 +16,15 @@ export function startREPL(state: State) {
     const command = state.commands[commandName];
 
     if (!command) {
-      console.log(`Unknown command`);
+      console.log(`Unknown command: "${commandName}". Type "help" for a list of commands.`);
       state.rl.prompt();
       return;
     }
 
     try {
-      command.callback(state);
+      await command.callback(state);
     } catch (err) {
-      console.log(err);
+      console.log((err as Error).message);
     }
 
     state.rl.prompt();
