@@ -1,10 +1,21 @@
+import { Cache } from "./pokecache.js";
+
 export class PokeAPI {
   private static readonly baseURL = 'https://pokeapi.co/api/v2';
+  private cache: Cache;
 
-  constructor() {}
+  constructor(cacheInterval: number) {
+    this.cache = new Cache(cacheInterval);
+  }
 
   async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
     const url = pageURL || `${PokeAPI.baseURL}/location-area`;
+
+    // 1. check cache first
+    const cached = this.cache.get<ShallowLocations>(url);
+    if (cached) {
+      return cached;
+    }
 
     try {
       const resp = await fetch(url);
@@ -14,27 +25,66 @@ export class PokeAPI {
       }
 
       const data: ShallowLocations = await resp.json();
+
+      // 2. store result in cache
+      this.cache.add(url, data);
+
       return data;
     } catch (e) {
       throw new Error(`Error fetching locations: ${(e as Error).message}`);
     }
   }
 
-
   async fetchLocation(locationName: string): Promise<Location> {
-    const resp = await fetch(`${PokeAPI.baseURL}/location-area/${locationName}`);
-    return await resp.json();
+    const url = `${PokeAPI.baseURL}/location-area/${locationName}`;
+
+    // 1. check cache first
+    const cached = this.cache.get<Location>(url);
+    if (cached) {
+      return cached;
+    }
+
+    try {
+      const resp = await fetch(url);
+
+      if (!resp.ok) {
+        throw new Error(`${resp.status} ${resp.statusText}`);
+      }
+
+      const data: Location = await resp.json();
+
+      // 2. store result in cache
+      this.cache.add(url, data);
+
+      return data;
+    } catch (e) {
+      throw new Error(`Error fetching location: ${(e as Error).message}`);
+    }
   }
 }
 
 export type ShallowLocations = {
-    count: number;
-    next: string;
-    previous: string;
-    results: {
-        name: string;
-        url: string;
-    }[];
+  count: number;
+  next: string;
+  previous: string;
+  results: {
+    name: string;
+    url: string;
+  }[];
 };
 
-export type Location = {};
+export type Location = {
+  id: number;
+  name: string;
+  game_indices: {
+    game_index: number;
+    generation: {
+      name: string;
+      url: string;
+    };
+  }[];
+  areas: {
+    name: string;
+    url: string;
+  }[];
+};
