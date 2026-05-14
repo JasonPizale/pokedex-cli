@@ -21,8 +21,10 @@ export function startREPL(state: State) {
       return;
     }
 
+    const args = words.slice(1);
+
     try {
-      await command.callback(state);
+      await command.callback(state, ...args);
     } catch (err) {
       console.log((err as Error).message);
     }
