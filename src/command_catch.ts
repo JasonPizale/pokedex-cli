@@ -9,7 +9,7 @@ export async function commandCatch(
         return;
     }
 
-    const pokemonName = args[0];
+    const pokemonName = args[0].toLowerCase();;
 
     console.log(`Throwing a Pokeball at ${pokemonName}...`);
 
